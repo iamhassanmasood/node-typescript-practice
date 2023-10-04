@@ -1,9 +1,17 @@
 import * as moduleAlias from 'module-alias';
+import dotenv from 'dotenv';
+import connect from '@server/db';
+
+dotenv.config();
+
+const db = process.env.DB_URI || '';
+connect({ db });
+
 const sourcePath = process.env.NODE_ENV === 'development' ? 'src' : __dirname;
 moduleAlias.addAliases({
   '@server': sourcePath,
   '@config': `${sourcePath}/config`,
-  '@domain': `${sourcePath}/domain`,
+  '@controller': `${sourcePath}/controller`,
 });
 
 import { createServer } from '@config/express';
@@ -18,9 +26,7 @@ async function startServer() {
   const app = createServer();
   const server = http.createServer(app).listen({ host, port }, () => {
     const addressInfo = server.address() as AddressInfo;
-    logger.info(
-      `Server ready at http://${addressInfo.address}:${addressInfo.port}`,
-    );
+    logger.info(`⚡ Server ready at http://${addressInfo.address}:${addressInfo.port}`);
   });
 
   const signalTraps: NodeJS.Signals[] = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
@@ -29,7 +35,7 @@ async function startServer() {
       logger.info(`process.once ${type}`);
 
       server.close(() => {
-        logger.debug('HTTP server closed');
+        logger.debug('🚫 HTTP server closed');
       });
     });
   });

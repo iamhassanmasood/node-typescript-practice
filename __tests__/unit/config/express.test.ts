@@ -5,6 +5,6 @@ describe('Server', () => {
   const app = createServer();
 
   it('should pass', (done) => {
-    supertest(app).get('/health').expect('UP', done);
+    supertest(app).get('/').expect('Test', done);
   });
 });

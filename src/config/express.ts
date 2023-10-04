@@ -1,3 +1,6 @@
+import postRoutes from '@server/routes/post';
+import productRoutes from '@server/routes/product';
+import userRoutes from '@server/routes/user';
 import express from 'express';
 
 const createServer = (): express.Application => {
@@ -8,9 +11,13 @@ const createServer = (): express.Application => {
 
   app.disable('x-powered-by');
 
-  app.get('/health', (_req, res) => {
-    res.send('UP');
+  app.get('/', (_req, res) => {
+    res.send('Test');
   });
+
+  app.use('/api', userRoutes);
+  app.use('/api', productRoutes);
+  app.use('/api', postRoutes);
 
   return app;
 };
