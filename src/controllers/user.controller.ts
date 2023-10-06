@@ -1,53 +1,70 @@
 import { Request, Response } from 'express';
 import User from '@server/models/user.model';
 
-export const getAllUsers = async (req: Request, res: Response) => {
-  console.log(req);
+const sendSuccessResponse = (response: Response, message: string, data: any) => {
+  return response.status(200).json({ success: true, message, data });
+};
+
+const sendErrorResponse = (response: Response, message: string) => {
+  return response.status(400).json({ success: false, message });
+};
+
+export const getAllUsers = async (_request: Request, response: Response) => {
   try {
     const users = await User.find();
-    res.status(200).json({ success: true, message: 'OK', data: users });
+    return sendSuccessResponse(response, 'OK', users);
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Something went wrong ☹️' });
+    return sendErrorResponse(response, 'Something went wrong ☹️');
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (request: Request, response: Response) => {
   try {
-    const { name, email } = req.body;
+    const { name, email } = request.body;
+    const existingUser = await User.findOne({ $or: [{ name }, { email }] });
+    if (existingUser) {
+      return sendErrorResponse(response, 'User with the same name or email already exists');
+    }
     const newUser = await User.create({ name, email });
-    res.status(200).json({ success: true, message: 'User created successfully', data: newUser });
+    return sendSuccessResponse(response, 'User created successfully', newUser);
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Something went wrong ☹️' });
+    return sendErrorResponse(response, 'Something went wrong ☹️');
   }
 };
 
-export const findOneUser = async (req: Request, res: Response) => {
+export const findOneUser = async (request: Request, response: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = request.params;
     const selectedUser = await User.findById(id);
-    res.status(200).json({ success: true, message: 'OK', data: selectedUser });
+    return sendSuccessResponse(response, 'OK', selectedUser);
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Something went wrong ☹️' });
+    return sendErrorResponse(response, 'Something went wrong ☹️');
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { name, email } = req.body;
+export const updateUser = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  const { name, email } = request.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(id, { name, email });
-    res.status(200).json({ success: true, message: 'User created successfully', data: updatedUser });
+    if (!updatedUser) {
+      return sendErrorResponse(response, 'User not found');
+    }
+    return sendSuccessResponse(response, 'User updated successfully', updatedUser);
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Something went wrong ☹️' });
+    return sendErrorResponse(response, 'Something went wrong ☹️');
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (request: Request, response: Response) => {
   try {
-    const { id } = req.params;
-    await User.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: 'User deleted successfully' });
+    const { id } = request.params;
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return sendErrorResponse(response, 'User not found');
+    }
+    return sendSuccessResponse(response, 'User deleted successfully', null);
   } catch (error) {
-    res.status(400).json({ success: false, message: 'Something went wrong ☹️' });
+    return sendErrorResponse(response, 'Something went wrong ☹️');
   }
 };

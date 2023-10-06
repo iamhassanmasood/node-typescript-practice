@@ -1,3 +1,4 @@
+import authRoutes from '@server/routes/auth';
 import postRoutes from '@server/routes/post';
 import productRoutes from '@server/routes/product';
 import userRoutes from '@server/routes/user';
@@ -18,6 +19,7 @@ const createServer = (): express.Application => {
   app.use('/api', userRoutes);
   app.use('/api', productRoutes);
   app.use('/api', postRoutes);
+  app.use('', authRoutes);
 
   return app;
 };
