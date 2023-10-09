@@ -6,13 +6,14 @@ import {
   updateProduct,
   deleteProduct,
 } from '@server/controllers/product.controller';
+import { checkAuthentication } from '@server/middlewares/auth.middleware';
 
 const productRoutes = Router();
 
-productRoutes.get('/product', getAllProducts);
-productRoutes.post('/product', createProduct);
-productRoutes.get('/product/:id', getOneProduct);
-productRoutes.put('/product/:id', updateProduct);
-productRoutes.delete('/product/:id', deleteProduct);
+productRoutes.get('/product', checkAuthentication, getAllProducts);
+productRoutes.post('/product', checkAuthentication, createProduct);
+productRoutes.get('/product/:id', checkAuthentication, getOneProduct);
+productRoutes.put('/product/:id', checkAuthentication, updateProduct);
+productRoutes.delete('/product/:id', checkAuthentication, deleteProduct);
 
 export default productRoutes;

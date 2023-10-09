@@ -1,17 +1,13 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router } from 'express';
 import { getAllUsers, createUser, findOneUser, updateUser, deleteUser } from '@server/controllers/user.controller';
+import { checkAuthentication } from '@server/middlewares/auth.middleware';
 
 const userRoutes = Router();
 
-export const testMiddleware = (_request: Request, _response: Response, next: NextFunction) => {
-  console.log('Test middleware executed');
-  next();
-};
-
-userRoutes.get('/user', testMiddleware, getAllUsers);
-userRoutes.post('/user', createUser);
-userRoutes.get('/user/:id', findOneUser);
-userRoutes.put('/user/:id', updateUser);
-userRoutes.delete('/user/:id', deleteUser);
+userRoutes.get('/user', checkAuthentication, getAllUsers);
+userRoutes.post('/user', checkAuthentication, createUser);
+userRoutes.get('/user/:id', checkAuthentication, findOneUser);
+userRoutes.put('/user/:id', checkAuthentication, updateUser);
+userRoutes.delete('/user/:id', checkAuthentication, deleteUser);
 
 export default userRoutes;
