@@ -1,7 +1,4 @@
-import authRoutes from '@server/routes/auth';
-import postRoutes from '@server/routes/post';
-import productRoutes from '@server/routes/product';
-import userRoutes from '@server/routes/user';
+import { authRoutes, postRoutes, productRoutes, userRoutes } from '@server/routes';
 import express from 'express';
 
 const createServer = (): express.Application => {
