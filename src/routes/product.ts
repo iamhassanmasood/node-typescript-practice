@@ -8,7 +8,7 @@ import {
 } from '@server/controllers/product.controller';
 import { checkAuthentication } from '@server/middlewares/auth.middleware';
 
-const productRoutes = Router();
+const productRoutes: Router = Router();
 
 productRoutes.get('/product', checkAuthentication, getAllProducts);
 productRoutes.post('/product', checkAuthentication, createProduct);

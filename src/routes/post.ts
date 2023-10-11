@@ -8,7 +8,7 @@ import {
 } from '@server/controllers/post.controller';
 import { checkAuthentication } from '@server/middlewares/auth.middleware';
 
-const postRoutes = Router();
+const postRoutes: Router = Router();
 
 postRoutes.get('/post', checkAuthentication, getAllPosts);
 postRoutes.post('/post', checkAuthentication, createPost);
