@@ -9,9 +9,13 @@ const sendErrorResponse = (response: Response, message: string) => {
   return response.status(400).json({ success: false, message });
 };
 
-export const getAllProducts = async (_request: Request, response: Response) => {
+export const getAllProducts = async (request: Request, response: Response) => {
   try {
-    const allProducts = await Product.find();
+    const page = parseInt(request.query.page as string) || 1;
+    const perPage = parseInt(request.query.perPage as string) || 10;
+    const skip = (page - 1) * perPage;
+
+    const allProducts = await Product.find().skip(skip).limit(perPage);
     return sendSuccessResponse(response, 'OK', allProducts);
   } catch (error) {
     return sendErrorResponse(response, 'Something went wrong ☹️');
