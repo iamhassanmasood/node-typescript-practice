@@ -1,6 +1,7 @@
 import * as moduleAlias from 'module-alias';
 import dotenv from 'dotenv';
 import connect from '@server/db';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -22,11 +23,16 @@ import { logger } from '@config/logger';
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || '5000';
 
-async function startServer() {
+const startServer = async () => {
   const app = createServer();
   const server = http.createServer(app).listen({ host, port }, () => {
     const addressInfo = server.address() as AddressInfo;
     logger.info(`⚡ Server ready at http://${addressInfo.address}:${addressInfo.port}`);
+  });
+  const io = new Server(server);
+
+  io.on('connection', (socket) => {
+    console.log({ socket }, 'Socket connected');
   });
 
   const signalTraps: NodeJS.Signals[] = ['SIGTERM', 'SIGINT', 'SIGUSR2'];
@@ -39,6 +45,6 @@ async function startServer() {
       });
     });
   });
-}
+};
 
 startServer();
