@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Product from '@server/models/product.model';
+import Product, { IProduct } from '@server/models/product.model';
 
 const sendSuccessResponse = (response: Response, message: string, data: any) => {
   return response.status(200).json({ success: true, message, data });
@@ -15,7 +15,7 @@ export const getAllProducts = async (request: Request, response: Response) => {
     const perPage = parseInt(request.query.perPage as string) || 10;
     const skip = (page - 1) * perPage;
 
-    const allProducts = await Product.find().skip(skip).limit(perPage);
+    const allProducts: IProduct[] = await Product.find().skip(skip).limit(perPage);
     return sendSuccessResponse(response, 'OK', allProducts);
   } catch (error) {
     return sendErrorResponse(response, 'Something went wrong ☹️');
@@ -25,7 +25,7 @@ export const getAllProducts = async (request: Request, response: Response) => {
 export const createProduct = async (request: Request, response: Response) => {
   try {
     const { name, price, type } = request.body;
-    const product = await Product.create({ name, price, type });
+    const product: IProduct = await Product.create({ name, price, type });
     return sendSuccessResponse(response, 'Product added successfully', product);
   } catch (error) {
     return sendErrorResponse(response, 'Something went wrong ☹️');

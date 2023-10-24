@@ -1,4 +1,9 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+export interface IProduct extends Document {
+  name: string;
+  price: string;
+  type: string;
+}
 
 const ProductSchema: Schema = new Schema({
   name: { type: String, required: true },
@@ -6,4 +11,4 @@ const ProductSchema: Schema = new Schema({
   type: { type: String, required: true, enum: ['Regular', 'Unique'] },
 });
 
-export default mongoose.model('Product', ProductSchema);
+export default mongoose.model<IProduct>('Product', ProductSchema);
