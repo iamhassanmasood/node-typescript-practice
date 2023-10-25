@@ -5,7 +5,7 @@ import User, { IUser } from '@server/models/auth.model';
 
 const JWT_SECRET: string = process.env.JWT_SECRET;
 
-export const signup = async (request: Request, response: Response) => {
+export const signup = async (request: Request, response: Response): Promise<Response> => {
   try {
     const { firstName, lastName, username, email, password } = request.body;
     const existingUser = await User.findOne({ email });
@@ -26,7 +26,7 @@ export const signup = async (request: Request, response: Response) => {
   }
 };
 
-export const signin = async (request: Request, response: Response) => {
+export const signin = async (request: Request, response: Response): Promise<Response> => {
   try {
     const { email, password } = request.body;
     const user: IUser | null = await User.findOne({ email });

@@ -27,7 +27,7 @@ const signupSchema = z.object({
     .optional(),
 });
 
-export const validateSignup = (request: Request, response: Response, next: NextFunction) => {
+export const validateSignup = (request: Request, response: Response, next: NextFunction): void | Response => {
   try {
     signupSchema.parse(request.body);
     return next();
