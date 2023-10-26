@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const checkAuthentication = (request: Request, response: Response, next: NextFunction): void => {
+export const checkAuthentication = (request: Request, response: Response, next: NextFunction): void | Response => {
   try {
     const token = request.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded);
-    next();
+    return next();
   } catch (error) {
-    response.status(401).json({
+    return response.status(401).json({
       message: 'Authentication failed',
     });
   }
