@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import flash from 'connect-flash';
 
-const createServer = (): express.Application => {
+const createServer = (SESSION_KEY): express.Application => {
   const app = express();
 
   app.use(express.urlencoded({ extended: true }));
@@ -14,7 +14,7 @@ const createServer = (): express.Application => {
   app.use(cookieParser());
   app.use(
     session({
-      secret: 'test',
+      secret: SESSION_KEY,
       resave: true,
       saveUninitialized: true,
     }),

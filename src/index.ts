@@ -22,9 +22,10 @@ import { logger } from '@config/logger';
 
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || '5000';
+const sessionSecret = process.env.SESSION_SECRET_KEY;
 
 const startServer = async () => {
-  const app = createServer();
+  const app = createServer(sessionSecret);
 
   const server = http.createServer(app).listen({ host, port }, () => {
     const addressInfo = server.address() as AddressInfo;
