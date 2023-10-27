@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import flash from 'connect-flash';
 
-const createServer = (SESSION_KEY): express.Application => {
+const createServer = (SESSION_KEY: string): express.Application => {
   const app = express();
 
   app.use(express.urlencoded({ extended: true }));
