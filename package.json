@@ -40,9 +40,13 @@
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
+    "@types/connect-flash": "^0.0.39",
+    "@types/cookie-parser": "^1.4.5",
     "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.9",
     "@types/jest": "^26.0.24",
     "@types/node": "~14.14.45",
+    "@types/passport": "^1.0.14",
     "@typescript-eslint/eslint-plugin": "~4.28.2",
     "@typescript-eslint/parser": "~4.28.2",
     "dotenv": "^10.0.0",
