@@ -1,19 +1,19 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IPlaces extends Document {
+export interface PlaceDocument extends Document {
   title: string;
-  place: string;
+  place?: string;
   url: string;
   article: string;
-  // images: array;
+  images: (string | null)[];
 }
 
-const PlacesSchema: Schema = new Schema({
+const placeSchema: Schema = new Schema({
   title: { type: String, required: true },
   place: { type: String },
   url: { type: String, required: true },
   article: { type: String, required: true },
-  // images: { type: Array },
+  images: { type: [String] },
 });
 
-export default mongoose.model<IPlaces>('Places', PlacesSchema);
+export default mongoose.model<PlaceDocument>('Place', placeSchema);
