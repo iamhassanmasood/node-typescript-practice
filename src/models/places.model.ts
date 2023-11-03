@@ -6,6 +6,7 @@ export interface PlaceDocument extends Document {
   url: string;
   article: string;
   images: (string | null)[];
+  date: string;
 }
 
 const placeSchema: Schema = new Schema({
