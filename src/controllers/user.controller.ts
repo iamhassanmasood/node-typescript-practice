@@ -26,7 +26,7 @@ export const createUser = async (request: Request, response: Response): Promise<
       return sendErrorResponse(response, 'User with the same name or email already exists');
     }
     const newUser = await User.create({ name, email });
-    return sendSuccessResponse(response, 'User created successfully', newUser);
+    return sendSuccessResponse(response, 'New user created successfully', newUser);
   } catch (error) {
     return sendErrorResponse(response, 'Something went wrong ☹️');
   }
