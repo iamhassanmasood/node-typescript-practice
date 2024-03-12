@@ -1,4 +1,3 @@
-import { authRoutes, postRoutes, productRoutes, userRoutes } from '@server/routes';
 import express from 'express';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
@@ -28,11 +27,6 @@ const createServer = (SESSION_KEY: string): express.Application => {
   app.get('/', (_req, res) => {
     res.send('Test');
   });
-
-  app.use('/api', userRoutes);
-  app.use('/api', productRoutes);
-  app.use('/api', postRoutes);
-  app.use('', authRoutes);
 
   return app;
 };
